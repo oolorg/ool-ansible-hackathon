@@ -17,4 +17,4 @@ if __name__ == '__main__':
     client.connect(host=mqtt['server'], port=mqtt['port'], keepalive=60)
     while True:
         client.publish(TOPIC, "{}:{}".format(test_msg, str(time.time())))
-        sleep(1)
+        sleep(8)
