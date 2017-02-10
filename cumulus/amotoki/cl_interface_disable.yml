@@ -1,0 +1,27 @@
+# cl_interface_enable で設定した内容を元に戻す playbook
+---
+- hosts: cumulus1
+  gather_facts: no
+  tasks:
+  - name: Ensure to enable all files under /etc/network/interfaces.d
+    lineinfile:
+      dest: /etc/network/interfaces
+      line: source /etc/network/interfaces.d/*.intf
+      regexp: ^source /etc/network/interfaces.d/.*
+    become: yes
+    notify: reload networking
+  - name: Disable swp1
+    file:
+      path: /etc/network/interfaces.d/swp1
+      state: absent
+    become: yes
+    notify: reload networking
+  handlers:
+  - name: reload networking
+    service:
+      name: networking
+      state: restarted
+    # コマンドモジュールは使わないで service モジュールを
+    # 指定するのが推奨
+    # command: service networking reload
+    become: yes

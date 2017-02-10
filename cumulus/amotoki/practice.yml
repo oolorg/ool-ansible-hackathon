@@ -1,0 +1,9 @@
+---
+- hosts: all
+  # gather_facts: no
+  tasks:
+  - ping:
+  - command: hostname
+    register: result
+  - debug: var=result
+  - debug: var=result.stdout

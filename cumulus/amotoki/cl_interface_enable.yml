@@ -1,0 +1,24 @@
+# cl_interface module を使う sample playbook
+---
+- hosts: cumulus1
+  gather_facts: no
+  tasks:
+  - name: Ensure to enable all files under /etc/network/interfaces.d
+    lineinfile:
+      dest: /etc/network/interfaces
+      line: source /etc/network/interfaces.d/*
+      regexp: ^source /etc/network/interfaces.d/.*
+    become: yes
+    notify: reload networking
+  - name: Configure swp1
+    cl_interface:
+      name: swp1
+      ipv4: 10.20.21.101/24
+    become: yes
+    notify: reload networking
+  handlers:
+  - name: reload networking
+    service:
+      name: networking
+      state: restarted
+    become: yes

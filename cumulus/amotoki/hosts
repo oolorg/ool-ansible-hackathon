@@ -1,0 +1,10 @@
+[cumulus]
+cumulus1 ansible_host=10.20.0.111
+cumulus2 ansible_host=10.20.0.112
+cumulus3 ansible_host=10.20.0.113
+cumulus4 ansible_host=10.20.0.114
+cumulus5 ansible_host=10.20.0.115
+cumulus6 ansible_host=10.20.0.116
+
+[jump]
+jump0 ansible_host=10.20.0.100
