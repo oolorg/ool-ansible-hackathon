@@ -1,0 +1,49 @@
+- name: gather facts from Cumulus Linux
+  hosts: cumulus
+  become: False 
+  gather_facts: True
+  tasks:
+  - name: facts 
+    debug: var=ansible_dns['nameservers']
+- name: append public DNS to /etc/resolv.conf
+  hosts: cumulus
+  become: True 
+  tasks:
+  - name: append 8.8.8.8 to /etc/resolv.conf 
+    lineinfile: dest=/etc/resolv.conf line="nameserver 8.8.8.8"
+- name: setup mqtt 
+  hosts: cumulus
+  become: True
+  tasks:
+  - apt:
+      name: "{{ item }}"
+#     update_cache: True 
+      update_cache: False 
+      state: present
+    with_items:
+      - python-pip
+  - pip:
+      name: "{{ item }}"
+    with_items:
+      - paho-mqtt
+      - pyyaml
+  - name: confirm mqtt connectivity 
+    mqtt:
+      server: 10.20.11.1
+      port: 11883
+      topic: log
+      payload: "Hello World! I am Cumulus Linux."
+      qos: 0
+      retain: False
+  - name: copy mqtt client (agent.py)
+    copy: src=agent.py dest=/tmp/agent.py owner=ool mode=0700
+  - name: copy config for agent.py
+    copy: src=agent.yaml dest=/tmp/agent.yaml owner=ool mode=0600
+- name: test custom modules 
+  hosts: cumulus
+  become: False 
+  tasks:
+  - name: timetest
+    timetest:
+  - name: testmod
+    testmod: state=absent name=arao

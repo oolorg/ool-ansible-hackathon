@@ -1,0 +1,11 @@
+[localhost]
+127.0.0.1 ansible_connection=local
+
+[raspi]
+192.168.57.1 ansible_user=pi
+
+[cumulus]
+10.20.0.11[1:1] ansible_user=ool
+
+[dell]
+10.20.11.1 ansible_user=Administrator ansible_connection=winrm
