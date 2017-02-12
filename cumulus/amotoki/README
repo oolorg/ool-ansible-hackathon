@@ -1,3 +1,17 @@
 Cumulus Linux を使ってみたときの Playbooks 群
 
 現状どれも正常に動作した。
+
+cumulus への SSH ログイン情報は
+group_vars/cumulus/account.yml で定義している。
+このファイルは ansible-vault で暗号化している。
+
+編集方法 ansible-vault edit group_vars/cumulus/account.yml
+vault password は changeme
+
+実行方法
+ansible-playbook -i hosts cl_interface_enable.yml --ask-vault-pass
+
+vault password を別の場所にファイルで保存しておいて
+ansible-playbook -i hosts --vault-password-file=VAULT_PASSWORD_FILE cl_interface_enable.yml
+のように実行してもよい。
