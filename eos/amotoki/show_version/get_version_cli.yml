@@ -1,0 +1,17 @@
+---
+- hosts: veos
+  connection: local
+  gather_facts: no
+  tasks:
+  - set_fact:
+      ansible_python_interpreter: "{{ lookup('env', 'VIRTUAL_ENV') }}/bin/python"
+  - name: Gather info from Show Version
+    eos_command:
+      commands:
+        - 'show version'
+      host: 10.20.0.121
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+    register: result
+  - debug: var=result

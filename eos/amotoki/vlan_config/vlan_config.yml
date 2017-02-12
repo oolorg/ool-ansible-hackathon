@@ -1,0 +1,33 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    access_info:
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: eapi
+      use_ssl: no
+      port: 80
+      host: "{{ ip_address }}"
+      authorize: yes
+    vlans:
+      - vlanid: 100
+        name: production
+      - vlanid: 200
+        name: app
+    interfaces:
+      - name: Et1
+        vlanid: 100
+      - name: Et2
+        vlanid: 200
+      
+  tasks:
+  - name: Configure VLANs
+    eos_config:
+      src: vlan.j2
+      provider: "{{ access_info }}"
+  - name: Configure VLAN ports
+    eos_config:
+      src: interface.j2
+      provider: "{{ access_info }}"

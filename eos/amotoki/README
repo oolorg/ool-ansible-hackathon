@@ -1,0 +1,17 @@
+Usage
+
+$ cd show_version
+$ ansible-playbook -i ../hosts -l arista get_version_api.yml
+
+$ cd vlan_config
+$ ansible-playbook -i ../hosts -l veos vlan_config.yml
+
+グループ名は all, veos, arista が定義されている。
+hosts 参照。
+
+アカウントは group_vars/all/account.yml で定義されている。
+group_vars は hosts と同じディレクトリのものが使われる。
+playbook と同じディレクトリにある必要はない。
+
+アカウント情報は暗号化されていない。
+ansible-vault を使う方法は cumulus/amotoki を参照。

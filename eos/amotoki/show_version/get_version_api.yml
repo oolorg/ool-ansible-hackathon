@@ -1,0 +1,20 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    access_info:
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: eapi
+      use_ssl: no
+      port: 80
+      host: "{{ ip_address }}"
+  tasks:
+  - name: Gather info from Show Version
+    eos_command:
+      commands:
+        - 'show version'
+      provider: "{{ access_info }}"
+    register: result
+  - debug: var=result.stdout
